@@ -1,0 +1,22 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /viagens/{viagemId} {
+      // GET: qualquer usuário autenticado pode consultar um documento
+      allow get: if request.auth != null;
+
+      // LIST: qualquer usuário autenticado pode fazer queries
+      allow list: if request.auth != null;
+
+      // UPDATE: qualquer usuário autenticado pode atualizar
+      // Validações de lógica de negócio (criador, permissões) estão no cliente
+      allow update: if request.auth != null;
+
+      // CREATE: apenas quem se declara criador
+      allow create: if request.auth != null && request.auth.uid == request.resource.data.criador;
+
+      // DELETE: apenas o criador
+      allow delete: if request.auth != null && resource.data.criador == request.auth.uid;
+    }
+  }
+}

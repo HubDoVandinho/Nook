@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cadastro - Minhas Viagens</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+<body>
+    <div class="lista-viagens-wrapper">
+        <div class="box-viagem">
+            <a href="login.html" class="btn-voltar-icon"><i class="bi bi-arrow-left"></i></a>
+            <h1>Criar Conta</h1>
+            <form id="form-cadastro">
+                <p>Nome Completo</p>
+                <input type="text" id="cad-nome" placeholder="Ex: João Silva" required>
+                
+                <p>E-mail</p>
+                <input type="email" id="cad-email" placeholder="seu@email.com" required>
+                
+                <p>Repita o E-mail</p>
+                <input type="email" id="cad-email-confirm" placeholder="Repita seu e-mail" required>
+
+                <p>Senha</p>
+                <div class="input-group-password">
+                    <input type="password" id="cad-senha" placeholder="Mínimo 8 caracteres" required>
+                    <button type="button" class="btn-toggle-password" onclick="togglePassword('cad-senha', this)">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                <p>Repita a Senha</p>
+                <div class="input-group-password">
+                    <input type="password" id="cad-senha-confirm" placeholder="******" required>
+                    <button type="button" class="btn-toggle-password" onclick="togglePassword('cad-senha-confirm', this)">
+                        <i class="bi bi-eye"></i>
+                    </button>
+                </div>
+
+                <button type="submit">Cadastrar Agora</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL DE AVISO CUSTOMIZADO -->
+    <div id="modal-aviso" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modal-aviso-titulo">Aviso</h2>
+            <p id="modal-aviso-mensagem">Mensagem padrão</p>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-confirmar" onclick="fecharModalAviso()" style="width: 100%;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./javascript/auth.js"></script>
+    <script>
+        window.togglePassword = function(inputId, btn) {
+            const input = document.getElementById(inputId);
+            const icon = btn.querySelector('i');
+            input.type = input.type === "password" ? "text" : "password";
+            icon.classList.toggle('bi-eye');
+            icon.classList.toggle('bi-eye-slash');
+        }
+    </script>
+</body>
+</html>

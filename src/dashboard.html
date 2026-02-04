@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minhas Viagens</title>
+    <link rel="stylesheet" href="./styles/styles.css">
+</head>
+
+<body class="dashboard-page">
+    <!-- Overlay para fechar a sidebar ao clicar fora -->
+    <div id="sidebar-overlay" class="sidebar-overlay hidden" onclick="alternarSidebar()"></div>
+
+    <!-- Botão para abrir a Sidebar (Flutuante) -->
+    <button class="btn-open-sidebar" onclick="alternarSidebar()">☰</button>
+
+    <!-- SIDEBAR -->
+    <nav id="sidebar" class="sidebar">
+        <div class="sidebar-header">
+            <div class="user-avatar">👤</div>
+            <p id="user-name-display">carregando...</p>
+        </div>
+
+        <div class="sidebar-content">
+            <button class="btn-sidebar" onclick="solicitarResetSenha(), alternarSidebar()">
+                <span></span> Alterar Senha
+            </button>
+
+            <button class="btn-sidebar" onclick="logout()">
+                <span></span> Sair da Conta
+            </button>
+
+            <hr class="sidebar-divider">
+
+            
+        </div>
+        <button class="btn-sidebar btn-danger btn-close-sidebar" onclick="abrirModalExcluirConta(), alternarSidebar()">
+            <span></span> EXCLUIR CONTA
+        </button>
+
+    </nav>
+
+    <!-- MODAL CONFIRMAÇÃO EXCLUIR CONTA -->
+    <div id="modal-delete-account" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 style="color: red;">ATENÇÃO!</h2>
+            <p>Isso apagará permanentemente sua conta <br> e todas as suas viagens. <br> Esta ação não pode ser desfeita.</p>
+            <div class="modal-buttons">
+                <button class="btn-confirmar" onclick="confirmarExcluirConta()">APAGAR TUDO</button>
+                <button class="btn-cancelar" onclick="fecharModalExcluirConta()">CANCELAR</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- TELA 1: LISTA DE TODAS AS VIAGENS -->
+    <div id="tela-lista" class="lista-viagens-wrapper">
+        <div class="box-viagem" style="background: #a29bfe;">
+            <h3>Entrar em Viagem Coletiva</h3>
+            <div style="display: flex; gap: 10px; margin-top: 10px;">
+                <input type="text" id="codigo-convite" placeholder="Cole o código aqui">
+                <button onclick="entrarNaViagem()" style="width: auto; margin: 0;">Entrar</button>
+            </div>
+        </div>
+        <div class="container-nova-viagem">
+
+            <div class="btn-add-viagem" onclick="alternarFormularioViagem(this)">
+                <h1 class="icone" id="icone">+</h1>
+                <form class="box-nova-viagem" onclick="event.stopPropagation()">
+                    <h1>Criar nova viagem</h1>
+                    <p>Nome da Viagem:</p>
+                    <input type="text" id="nome-viagem" placeholder="Ex: Rio 2024" required>
+                    <p>Data:</p>
+                    <input type="date" id="data-viagem" required>
+                    <button type="submit" id="btn-salvar-viagem">Salvar Viagem</button>
+                </form>
+            </div>
+        </div>
+        <div id="container-listagem" class="lista-viagens">
+            <!-- Viagens aparecem aqui -->
+        </div>
+    </div>
+
+    <!-- TELA 2: DETALHES DA VIAGEM SELECIONADA -->
+    <div id="tela-detalhes" class="lista-viagens-wrapper hidden">
+        <button class="btn-voltar" onclick="voltarParaLista()">← Voltar</button>
+
+        <div class="box-viagem">
+
+
+            <h1 id="detalhe-titulo">Nome da Viagem</h1>
+
+            <!-- Dentro do detalhe-titulo ou abaixo dele -->
+            <p style="font-size: 0.8rem; cursor: pointer; background: #eee; padding: 5px; border: 2px solid #000; text-align: center;"
+                onclick="copiarCodigo()">
+                Código do Convite: <span id="viagem-id-display"></span> <br> (Clique para copiar)
+            </p>
+
+            <p id="detalhe-data">Data: --/--/----</p>
+            <div class="status-container">
+                <p>Status: </p>
+                <select id="status-viagem" onchange="atualizarStatusNoArray()">
+                    <option value="Em andamento">Em andamento</option>
+                    <option value="Finalizada">Finalizada</option>
+                    <option value="Cancelada">Cancelada</option>
+                </select>
+            </div>
+            <h2 class="total-gastos">Total: <span id="total-valor">R$ 0,00</span></h2>
+            <button class="btn-excluir-viagem" onclick="abrirModal()">Excluir Viagem</button>
+        </div>
+
+        <div class="box-viagem">
+            <h3>Participantes</h3>
+            <div id="lista-participantes" style="margin-bottom: 15px;">
+                <!-- Participantes aparecem aqui -->
+            </div>
+            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
+                <input type="email" id="email-convite" placeholder="email@exemplo.com" style="flex: 1;">
+                <button onclick="convidarPorEmail()" style="width: auto; margin: 0;">Convidar</button>
+            </div>
+        </div>
+
+        <div class="box-viagem">
+            <h3>Novo Gasto</h3>
+            <form id="form-gasto" class="form-gasto">
+                <input type="text" id="gasto-nome" placeholder="O que comprou?" required>
+                <input type="text" id="gasto-valor" placeholder="R$ 0,00" required>
+
+                <button type="submit">Adicionar</button>
+            </form>
+        </div>
+
+        <div id="lista-gastos" class="lista-viagens">
+            <!-- Gastos aparecem aqui -->
+        </div>
+    </div>
+
+    <!-- MODAL DE EXCLUSÃO -->
+    <div id="modal-exclusao" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Excluir Viagem?</h2>
+            <p>Todos os dados serão perdidos.</p>
+            <div class="modal-buttons">
+                <button class="btn-confirmar" onclick="confirmarExclusao()">Excluir</button>
+                <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    <!-- MODAL DE EXCLUSÃO DE GASTO-->
+    <div id="modal-exclusao-gasto" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2>Excluir Gasto?</h2>
+            <p>O valor será removido permanentemente.</p>
+            <div class="modal-buttons">
+                <!-- Note que a função de confirmar é diferente -->
+                <button class="btn-confirmar" onclick="confirmarExclusaoGasto()">Excluir</button>
+                <button class="btn-cancelar" onclick="fecharModalGasto()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL DE AVISO CUSTOMIZADO -->
+    <div id="modal-aviso" class="modal-overlay hidden">
+        <div class="modal-content">
+            <h2 id="modal-aviso-titulo">Aviso</h2>
+            <p id="modal-aviso-mensagem">Mensagem padrão</p>
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button class="btn-confirmar" onclick="fecharModalAviso()" style="width: 100%;">OK</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="./javascript/script.js"></script>
+</body>
+
+</html>

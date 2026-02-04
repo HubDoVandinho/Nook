@@ -1,0 +1,764 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+}
+
+:root {
+    --top-offset: 80px; /* espaço reservado para botão/area fixa da sidebar */
+}
+
+/* Evita scroll horizontal indesejado em dispositivos móveis */
+html, body {
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+/* Aplicar top-offset apenas na dashboard para não alterar outras páginas */
+.dashboard-page {
+    --top-offset: 80px;
+}
+
+.dashboard-page .lista-viagens-wrapper {
+    margin-top: var(--top-offset);
+}
+
+body {
+    background-color: #dbdbdb;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    padding: 20px;
+}
+
+.hidden {
+    display: none !important;
+    
+}
+
+.lista-viagens-wrapper {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: center;    
+}
+
+.container-nova-viagem {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: #dbdbdb;
+    padding-bottom: 10px;
+}
+
+.btn-add-viagem {
+    cursor: pointer;
+    border: 3px solid #000;
+    background: #fff;
+    padding: 20px;
+    height: 80px;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 4px 4px 0px #000;
+}
+
+.btn-add-viagem h1 {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.btn-add-viagem.aberto {
+    height: 370px;
+    box-shadow: 8px 8px 0px #000;
+}
+
+.icone {
+    text-align: center;
+    transition: transform 0.4s;
+}
+
+.btn-add-viagem.aberto .icone {
+    transform: rotate(135deg);
+    color: red;
+}
+
+.box-nova-viagem {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.btn-add-viagem.aberto .box-nova-viagem {
+    opacity: 1;
+}
+
+input,
+select {
+    padding: 10px;
+    border: 2px solid #000;
+    width: 100%;
+}
+
+.form-gasto input{
+    margin: 10px 0;
+}
+    
+.box-viagem {
+    border: 3px solid #000;
+    background: #fff;
+    padding: 20px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.box-viagem p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+.box-viagem h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.box-viagem h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.lista-viagens {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+button {
+    padding: 10px;
+    border: 2px solid #000;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 10px 0;
+    width: 100%;
+}
+
+.btn-confirmar:hover{
+    background: #ff4757;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+button:hover {
+    background: #4CAF50;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+    
+}
+
+.btn-excluir-viagem {
+    background: #ff4757;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.btn-voltar {
+    background: #555;
+    width: fit-content;
+    margin-bottom: 10px;
+}
+
+.item-gasto {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid #000;
+    background: #eee;
+}
+
+.btn-del-gasto {
+    background: none;
+    color: red;
+    border: none;
+    font-size: 1.2rem;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+}
+
+.modal-content {
+    background: #fff;
+    padding: 20px;
+    border: 4px solid #000;
+    text-align: center;
+}
+
+.modal-buttons {
+    display: grid;
+    gap: 10px;
+    margin-top: 15px;
+    grid-template-columns: 1fr 1fr;
+}
+
+.status-container {
+    margin: 20px 0;
+}
+
+.item-gasto small {
+    color: #666;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 2px;
+}
+
+.item-gasto div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-del-gasto {
+    margin: 0;
+    padding: 5px;
+    width: auto;
+}
+
+
+a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+
+
+#form-login p, #form-cadastro p {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+#form-login input, #form-cadastro input {
+    margin-bottom: 15px;
+}
+
+/* Estilos para a Tela de Apresentação */
+.intro-card {
+    text-align: center;
+    padding: 40px 20px !important;
+    animation: fadeIn 0.5s ease-out;
+}
+
+.emoji-bag {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    background: #fff;
+    border: 3px solid #000;
+    padding: 10px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.intro-card h1 {
+    font-size: 2.5rem;
+    line-height: 1;
+    margin-bottom: 15px;
+}
+
+.intro-card p {
+    font-size: 1.1rem;
+    margin-bottom: 25px !important;
+    text-align: center !important;
+}
+
+.features {
+    list-style: none;
+    text-align: left;
+    display: inline-block;
+    margin-bottom: 30px;
+}
+
+.features li {
+    font-weight: bold;
+    margin: 10px 0;
+    font-size: 1rem;
+}
+
+.btn-comecar {
+    padding: 10px;
+    border: 2px solid #000;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 10px 0;
+    width: 100%;
+}    
+
+.btn-comecar:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 8px 8px 0px #000 !important;
+    background: #4CAF50 !important;
+    color: white !important;
+    
+}
+
+/* Animação simples de entrada */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Container da Intro */
+.intro-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    animation: fadeIn 0.6s ease-out;
+}
+
+/* Hero Card */
+.hero-card {
+    background: #fff;
+    text-align: center;
+    padding: 50px 20px !important;
+    position: relative;
+}
+
+.badge {
+    position: absolute;
+    top: -15px;
+    right: 10px;
+    background: #ff4757;
+    color: white;
+    padding: 5px 15px;
+    font-weight: bold;
+    border: 3px solid #000;
+    transform: rotate(5deg);
+    font-size: 0.8rem;
+}
+
+.emoji-main {
+    font-size: 4.5rem;
+    margin-bottom: 10px;
+}
+
+.hero-card h1 {
+    font-size: 2.8rem;
+    line-height: 1;
+    margin-bottom: 20px;
+}
+
+/* Grid de Funcionalidades */
+.features-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.feature-item {
+    background: #fff;
+    border: 3px solid #000;
+    padding: 15px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+.feature-icon {
+    font-size: 1.5rem;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.feature-item h3 {
+    font-size: 1rem;
+    margin-bottom: 5px;
+}
+
+.feature-item p {
+    font-size: 0.8rem;
+    color: #444;
+}
+
+/* Seção de Passos (Steps) */
+.steps-card {
+    background: #a29bfe !important; /* Roxo suave Neobrutalista */
+}
+
+.steps-card h3 {
+    margin-bottom: 20px;
+    text-decoration: underline;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.step-number {
+    background: #fff;
+    border: 2px solid #000;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0px #000;
+}
+
+.step p {
+    font-size: 0.9rem;
+    font-weight: bold;
+}
+
+.footer-intro {
+    text-align: center;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 10px;
+    opacity: 0.7;
+}
+
+/* Responsividade para telas muito pequenas */
+@media (max-width: 350px) {
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.link-voltar {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 0.9rem;
+    text-decoration: none;
+    color: #555;
+    transition: 0.2s;
+}
+
+.link-voltar:hover {
+    color: #000;
+    transform: translateX(-3px); /* Pequena animação lateral */
+}
+
+/* Ajuste no box-viagem para acomodar o link de voltar no topo */
+.box-viagem {
+    position: relative;
+}
+
+/* Botão que abre a sidebar */
+.btn-open-sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    font-size: 1.5rem;
+    z-index: 90;
+    cursor: pointer;
+    color: #000;
+    display: flex;
+    align-items: center;
+}
+
+/* Estrutura da Sidebar */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -320px; /* Escondida */
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    border-right: 5px solid #000;
+    z-index: 1000;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 10px 0px 0px rgba(0,0,0,0.1);
+    
+}
+
+.sidebar.ativa {
+    transform: translateX(320px);
+    box-shadow: 15px 0px 0px #000;
+}
+
+/* Overlay Escuro */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    z-index: 900;
+}
+
+/* Conteúdo interno */
+.sidebar-header {
+    text-align: center;
+    padding: 20px 0;
+    border-bottom: 3px solid #000;
+    margin-bottom: 20px;
+}
+
+.box-login
+
+.user-avatar {
+    font-size: 2rem;
+    background: #a29bfe;
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #000;
+    margin: 0 auto 10px;
+    box-shadow: 4px 4px 0px #000;
+}
+
+#user-email-display {
+    font-weight: bold;
+    word-break: break-all;
+}
+
+.btn-sidebar {
+    background: #fff;
+    color: #000;
+    text-align: center;
+    
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 15px;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+
+}
+
+.btn-sidebar:hover {
+    background: #eee;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+.btn-danger {
+    background: #ff4757 !important;
+    color: #fff !important;
+}
+
+.sidebar-divider {
+    border: 0;
+    border-top: 3px solid #000;
+    margin: 20px 0;
+}
+
+.btn-close-sidebar {
+    
+    background: #000;
+    color: #fff;
+}
+
+/* Adicionar ao seu styles.css */
+
+.password-container {
+    margin-bottom: 15px;
+    position: relative;
+}
+
+.show-password {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin-top: 5px;
+    cursor: pointer;
+    text-align: right;
+}
+
+.show-password input {
+    width: auto;
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Ajuste para inputs de senha ficarem iguais aos outros */
+input[type="password"] {
+    margin-bottom: 0px !important; /* Espaço controlado pelo container */
+}
+
+/* Botão de Voltar com Ícone */
+.btn-voltar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+
+.btn-voltar-icon:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+    background: #eee;
+}
+
+/* Posiciona o botão de voltar fixo no dashboard no canto superior direito */
+.dashboard-page .btn-voltar,
+.dashboard-page .btn-voltar-icon {
+    position: fixed;
+    top: 20px; /* mesma altura do botão da sidebar */
+    right: 20px; /* canto extremo direito */
+    z-index: 95; /* acima do botão de abrir sidebar */
+    width: auto;
+    height: 48px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media (max-width: 420px) {
+    .dashboard-page .btn-voltar,
+    .dashboard-page .btn-voltar-icon {
+        top: 12px;
+        right: 12px;
+        height: 44px;
+    }
+}
+
+/* Regras adicionais para responsividade mobile (melhor acesso a toque e ajuste de layout) */
+@media (max-width: 480px) {
+    /* Ajustes específicos para dashboard mobile */
+    .dashboard-page .lista-viagens-wrapper {
+        padding: 12px 8px;
+    }
+
+    .lista-viagens-wrapper {
+        max-width: 100%;
+        padding: 0 8px;
+    }
+
+    .box-viagem {
+        padding: 16px;
+    }
+
+    button {
+        padding: 12px;
+        font-size: 1rem;
+    }
+
+    .btn-open-sidebar {
+        width: 48px;
+        height: 48px;
+        top: 12px;
+        left: 12px;
+        font-size: 1.2rem;
+    }
+
+    /* Ajusta posicionamento do voltar para não sobrepor o botão de abrir sidebar */
+    .dashboard-page .btn-voltar,
+    .dashboard-page .btn-voltar-icon {
+        margin-left: 72px;
+        margin-bottom: 12px;
+        z-index: 10;
+    }
+
+    /* Sidebar ocupa porcentagem da tela em mobile e anima corretamente */
+    .sidebar {
+        width: 80vw;
+        left: -80vw;
+    }
+
+    .sidebar.ativa {
+        transform: translateX(80vw);
+    }
+
+    .sidebar-overlay {
+        z-index: 800;
+    }
+
+    .dashboard-page .container-nova-viagem {
+        position: sticky;
+        top: 56px; /* não ficar embaixo do botão flutuante */
+    }
+}
+
+@media (max-width: 360px) {
+    /* Ajustes finais para telas muito pequenas */
+    .dashboard-page .btn-voltar,
+    .dashboard-page .btn-voltar-icon {
+        margin-left: 60px;
+    }
+
+    .features-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Grupo de Input com Botão de Ver Senha */
+.input-group-password {
+    position: relative;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.input-group-password input {
+    padding-right: 45px; /* Espaço para o ícone não sobrepor o texto */
+    margin-bottom: 0 !important;
+}
+
+.btn-toggle-password {
+    position: absolute;
+    right: 10px;
+    background: none;
+    border: none;
+    width: auto;
+    margin: 0;
+    padding: 5px;
+    color: #000;
+    font-size: 1.2rem;
+    cursor: pointer;
+    box-shadow: none !important; /* Remove sombra do botão neobrutalista padrão */
+    transform: none !important; /* Remove animação de clique padrão */
+}
+
+.btn-toggle-password:hover {
+    background: none;
+    
+}
+
+
