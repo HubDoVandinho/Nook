@@ -375,6 +375,7 @@ a {
 
 .btn-danger:hover {
     background-color: #ff6b6b;
+}    
 
 .sidebar-divider {
     border: 0;
@@ -644,5 +645,99 @@ a {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* =========================================
+   DASHBOARD DESKTOP (MELHORIAS)
+   ========================================= */
+
+@media (min-width: 768px) {
+    /* Permite que o Dashboard use mais largura no PC */
+    .dashboard-page .lista-viagens-wrapper {
+        max-width: 1100px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    /* Tela de Lista: Viagens em Grid (várias por linha) */
+    .dashboard-page #container-listagem {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 20px;
+    }
+
+    /* Topo da lista: Entrar e Criar lado a lado */
+    .dashboard-page #tela-lista {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    /* Layout de Detalhes em duas colunas */
+    .detalhes-grid-layout {
+        display: grid;
+        grid-template-columns: 400px 1fr; /* Coluna de info menor, gastos maior */
+        gap: 25px;
+        align-items: start;
+    }
+
+    .detalhes-col {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    /* Ajuste para o formulário de gastos não ficar esticado verticalmente */
+    .form-gasto {
+        display: grid;
+        grid-template-columns: 1fr 150px 150px;
+        gap: 10px;
+        align-items: end;
+    }
+    
+    .form-gasto input, .form-gasto button {
+        margin: 0 !important;
+    }
+}
+
+/* =========================================
+   SIMETRIA PERFEITA DOS BOTÕES FIXOS
+   ========================================= */
+
+/* Menu (Esquerda) e Voltar (Direita) idênticos */
+.btn-open-sidebar, 
+.dashboard-page .btn-voltar-icon {
+    position: fixed;
+    top: 20px;
+    width: 50px;
+    height: 50px;
+    background: #fff;
+    border: 3px solid #000;
+    box-shadow: 4px 4px 0px #000;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #000;
+    transition: 0.2s;
+    margin: 0;
+}
+
+.btn-open-sidebar { left: 20px; }
+.dashboard-page .btn-voltar-icon { right: 20px; }
+
+.btn-open-sidebar:hover, 
+.dashboard-page .btn-voltar-icon:hover {
+    background: #eee;
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0px #000;
+}
+
+/* Garante que o conteúdo não fique embaixo dos botões fixos no Desktop */
+@media (min-width: 768px) {
+    .dashboard-page .lista-viagens-wrapper {
+        padding-top: 20px;
     }
 }

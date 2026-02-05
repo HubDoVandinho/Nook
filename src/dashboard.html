@@ -34,7 +34,7 @@
 
             <hr class="sidebar-divider">
 
-            
+
         </div>
         <button class="btn-sidebar btn-danger btn-close-sidebar" onclick="abrirModalExcluirConta(), alternarSidebar()">
             <span></span> EXCLUIR CONTA
@@ -46,7 +46,8 @@
     <div id="modal-delete-account" class="modal-overlay hidden">
         <div class="modal-content">
             <h2 style="color: red;">ATENÇÃO!</h2>
-            <p>Isso apagará permanentemente sua conta <br> e todas as suas viagens. <br> Esta ação não pode ser desfeita.</p>
+            <p>Isso apagará permanentemente sua conta <br> e todas as suas viagens. <br> Esta ação não pode ser
+                desfeita.</p>
             <div class="modal-buttons">
                 <button class="btn-confirmar" onclick="confirmarExcluirConta()">APAGAR TUDO</button>
                 <button class="btn-cancelar" onclick="fecharModalExcluirConta()">CANCELAR</button>
@@ -84,52 +85,59 @@
 
     <!-- TELA 2: DETALHES DA VIAGEM SELECIONADA -->
     <div id="tela-detalhes" class="lista-viagens-wrapper hidden">
-        <button class="btn-voltar btn-voltar-icon" onclick="voltarParaLista()"><i class="bi bi-arrow-left"></i></button>
+        <!-- Botão Voltar (Agora simétrico ao de menu) -->
+        <button class="btn-voltar btn-voltar-icon" onclick="voltarParaLista()">
+            <i class="bi bi-arrow-left"></i>
+        </button>
 
-        <div class="box-viagem">
+        <!-- Adicionamos este wrapper para o Grid Desktop -->
+        <div class="detalhes-grid-layout">
 
+            <!-- COLUNA 1: INFO E PARTICIPANTES -->
+            <div class="detalhes-col">
+                <div class="box-viagem">
+                    <h1 id="detalhe-titulo">Nome da Viagem</h1>
+                    <p id="detalhe-data">Data: --/--/----</p>
+                    <div class="status-container">
+                        <p>Status: </p>
+                        <select id="status-viagem" onchange="atualizarStatusNoArray()">
+                            <option value="Em andamento">Em andamento</option>
+                            <option value="Finalizada">Finalizada</option>
+                            <option value="Cancelada">Cancelada</option>
+                        </select>
+                    </div>
+                    <h2 class="total-gastos">Total: <span id="total-valor">R$ 0,00</span></h2>
+                    <button class="btn-excluir-viagem" onclick="abrirModal()">Excluir Viagem</button>
+                </div>
 
-            <h1 id="detalhe-titulo">Nome da Viagem</h1>
-
-            <p id="detalhe-data">Data: --/--/----</p>
-            <div class="status-container">
-                <p>Status: </p>
-                <select id="status-viagem" onchange="atualizarStatusNoArray()">
-                    <option value="Em andamento">Em andamento</option>
-                    <option value="Finalizada">Finalizada</option>
-                    <option value="Cancelada">Cancelada</option>
-                </select>
+                <div class="box-viagem">
+                    <h3>Participantes</h3>
+                    <div id="lista-participantes" style="margin-bottom: 15px;"></div>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="email" id="email-convite" placeholder="email@exemplo.com" style="flex: 1;">
+                        <button onclick="convidarPorEmail()" style="width: auto; margin: 0;">Convidar</button>
+                    </div>
+                </div>
             </div>
-            <h2 class="total-gastos">Total: <span id="total-valor">R$ 0,00</span></h2>
-            <button class="btn-excluir-viagem" onclick="abrirModal()">Excluir Viagem</button>
-        </div>
 
-        <div class="box-viagem">
-            <h3>Participantes</h3>
-            <div id="lista-participantes" style="margin-bottom: 15px;">
-                <!-- Participantes aparecem aqui -->
+            <!-- COLUNA 2: GASTOS -->
+            <div class="detalhes-col">
+                <div class="box-viagem">
+                    <h3>Novo Gasto</h3>
+                    <form id="form-gasto" class="form-gasto">
+                        <input type="text" id="gasto-nome" placeholder="O que comprou?" required>
+                        <input type="text" id="gasto-valor" placeholder="R$ 0,00" required>
+                        <button type="submit">Adicionar Gasto</button>
+                    </form>
+                </div>
+
+                <div id="lista-gastos" class="lista-viagens">
+                    <!-- Gastos aparecem aqui -->
+                </div>
             </div>
-            <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                <input type="email" id="email-convite" placeholder="email@exemplo.com" style="flex: 1;">
-                <button onclick="convidarPorEmail()" style="width: auto; margin: 0;">Convidar</button>
-            </div>
-        </div>
 
-        <div class="box-viagem">
-            <h3>Novo Gasto</h3>
-            <form id="form-gasto" class="form-gasto">
-                <input type="text" id="gasto-nome" placeholder="O que comprou?" required style="margin: 10px 0;">
-                <input type="text" id="gasto-valor" placeholder="R$ 0,00" required>
-
-                <button type="submit">Adicionar</button>
-            </form>
-        </div>
-
-        <div id="lista-gastos" class="lista-viagens">
-            <!-- Gastos aparecem aqui -->
         </div>
     </div>
-
     <!-- MODAL DE EXCLUSÃO -->
     <div id="modal-exclusao" class="modal-overlay hidden">
         <div class="modal-content">
