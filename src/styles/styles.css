@@ -1,3 +1,6 @@
+/* =========================================
+   1. RESETS E VARIÁVEIS GLOBAIS
+   ========================================= */
 * {
     box-sizing: border-box;
     margin: 0;
@@ -6,28 +9,26 @@
 }
 
 :root {
+    --bg-color: #dbdbdb;
+    --border-main: 3px solid #000;
+    --border-modal: 4px solid #000;
+    --shadow-main: 4px 4px 0px #000;
+    --shadow-hover: 6px 6px 0px #000;
+    --shadow-sidebar: 15px 0px 0px #000;
+    --accent-purple: #a29bfe;
+    --accent-red: #ff4757;
+    --accent-green: #4CAF50;
     --top-offset: 80px;
-    /* espaço reservado para botão/area fixa da sidebar */
 }
 
-/* Evita scroll horizontal indesejado em dispositivos móveis */
 html,
 body {
     max-width: 100%;
     overflow-x: hidden;
-}
-
-/* Aplicar top-offset apenas na dashboard para não alterar outras páginas */
-.dashboard-page {
-    --top-offset: 80px;
-}
-
-.dashboard-page .lista-viagens-wrapper {
-    margin-top: var(--top-offset);
+    background-color: var(--bg-color);
 }
 
 body {
-    background-color: #dbdbdb;
     display: flex;
     justify-content: center;
     min-height: 100vh;
@@ -36,9 +37,13 @@ body {
 
 .hidden {
     display: none !important;
-
 }
 
+/* =========================================
+   2. ESTRUTURA DE LAYOUT (CONTAINERS)
+   ========================================= */
+
+/* Padrão para Login, Cadastro e Dashboard (Estreito) */
 .lista-viagens-wrapper {
     width: 100%;
     max-width: 380px;
@@ -48,28 +53,168 @@ body {
     justify-content: center;
 }
 
+/* Ajuste específico para Dashboard */
+.dashboard-page .lista-viagens-wrapper {
+    margin-top: var(--top-offset);
+}
+
+/* Ajuste específico para INDEX (Permite expandir no Desktop) */
+@media (min-width: 768px) {
+    .index-page .lista-viagens-wrapper {
+        max-width: 1000px;
+        margin: 0 auto;
+    }
+
+    /* Centraliza verticalmente Login e Cadastro no PC */
+    body:not(.index-page):not(.dashboard-page) {
+        align-items: center;
+    }
+}
+
+/* =========================================
+   3. COMPONENTES GENÉRICOS (UI)
+   ========================================= */
+
+/* Blocos de conteúdo (Cards) */
+.box-viagem {
+    border: var(--border-main);
+    background: #fff;
+    padding: 20px;
+    box-shadow: var(--shadow-main);
+    position: relative;
+}
+
+.box-viagem h1 {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.box-viagem h3 {
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.box-viagem p {
+    margin: 10px 0;
+    font-size: 1.1rem;
+    text-align: left;
+}
+
+/* Inputs e Selects */
+input,
+select {
+    padding: 10px;
+    border: 2px solid #000;
+    width: 100%;
+}
+
+/* Botões */
+button {
+    padding: 10px;
+    border: 2px solid #000;
+    background: #000;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.2s;
+    margin: 10px 0;
+    width: 100%;
+}
+
+button:hover {
+    background: var(--accent-green);
+    transform: translate(-2px, -2px);
+    box-shadow: var(--shadow-hover);
+}
+
+.btn-confirmar:hover {
+    background: var(--accent-red);
+}
+
+.btn-excluir-viagem {
+    background: var(--accent-red);
+    margin-top: 10px;
+}
+
+.dashboard-page .btn-voltar {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    background: #555;
+    border: var(--border-main);
+    box-shadow: var(--shadow-main);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    z-index: 90;
+}
+
+/* Botão de Voltar com Ícone (Login/Cadastro) */
+.btn-voltar-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: #fff;
+    border: 2px solid #000;
+    box-shadow: 3px 3px 0px #000;
+    color: #000;
+    text-decoration: none;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    transition: 0.2s;
+}
+.btn-voltar-icon:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+    background: #eee;
+}
+
+.dashboard-page .btn-voltar-icon:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 5px 5px 0px #000;
+    background: #eee;
+    color: #000;
+}
+
+/* Links */
+a {
+    color: #000;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+/* =========================================
+   4. DASHBOARD - ESPECÍFICOS
+   ========================================= */
+
+/* Nova Viagem (Sanfona) */
 .container-nova-viagem {
     position: sticky;
     top: 0;
     z-index: 10;
-    background: #dbdbdb;
+    background: var(--bg-color);
     padding-bottom: 10px;
 }
 
 .btn-add-viagem {
     cursor: pointer;
-    border: 3px solid #000;
+    border: var(--border-main);
     background: #fff;
     padding: 20px;
     height: 80px;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    box-shadow: 4px 4px 0px #000;
-}
-
-.btn-add-viagem h1 {
-    text-align: center;
-    margin-bottom: 10px;
+    transition: 0.4s;
+    box-shadow: var(--shadow-main);
 }
 
 .btn-add-viagem.aberto {
@@ -100,83 +245,11 @@ body {
     opacity: 1;
 }
 
-input,
-select {
-    padding: 10px;
-    border: 2px solid #000;
-    width: 100%;
-}
-
-.form-gasto input {
-    margin: 10px 0;
-}
-
-.box-viagem {
-    border: 3px solid #000;
-    background: #fff;
-    padding: 20px;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.box-viagem p {
-    margin: 10px 0;
-    font-size: 1.1rem;
-    text-align: left;
-}
-
-.box-viagem h1 {
-    font-size: 2rem;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
-.box-viagem h3 {
-    font-size: 1.3rem;
-    margin-bottom: 15px;
-    text-align: center;
-}
-
+/* Gastos e Itens */
 .lista-viagens {
     display: flex;
     flex-direction: column;
     gap: 15px;
-}
-
-button {
-    padding: 10px;
-    border: 2px solid #000;
-    background: #000;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-    margin: 10px 0;
-    width: 100%;
-}
-
-.btn-confirmar:hover {
-    background: #ff4757;
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-}
-
-button:hover {
-    background: #4CAF50;
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-
-}
-
-.btn-excluir-viagem {
-    background: #ff4757;
-    width: 100%;
-    margin-top: 10px;
-}
-
-.btn-voltar {
-    background: #555;
-    width: fit-content;
-    margin-bottom: 10px;
 }
 
 .item-gasto {
@@ -188,21 +261,128 @@ button:hover {
     background: #eee;
 }
 
+.item-gasto small {
+    color: #666;
+    font-size: 0.8rem;
+    display: block;
+    margin-top: 2px;
+}
+
 .btn-del-gasto {
     background: none;
-    color: #ff4757;
+    color: var(--accent-red);
     border: none;
     font-size: 1.2rem;
+    width: auto;
+    margin: 0;
+    padding: 5px;
 }
 
 .btn-del-gasto:hover {
-   transform: translate(-2px, -2px);
-   background-color: #ff4757;
-    color: white;
-    
-
+    background: var(--accent-red);
+    color: #fff;
 }
 
+/* Status e Totais */
+.status-container {
+    margin: 20px 0;
+}
+
+.total-gastos {
+    text-align: center;
+    margin: 15px 0;
+    font-size: 1.5rem;
+}
+
+/* Sidebar */
+.btn-open-sidebar {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 50px;
+    height: 50px;
+    background: #555;
+    border: var(--border-main);
+    box-shadow: var(--shadow-main);
+    font-size: 1.5rem;
+    z-index: 90;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.btn-open-sidebar:hover {
+    background-color: #fff;
+    color: #000;
+}
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -320px;
+    width: 300px;
+    height: 100vh;
+    background: #fff;
+    border-right: 5px solid #000;
+    z-index: 1000;
+    transition: transform 0.4s;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.sidebar.ativa {
+    transform: translateX(320px);
+    box-shadow: var(--shadow-sidebar);
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 900;
+}
+
+.user-avatar {
+    font-size: 2rem;
+    background: var(--accent-purple);
+    width: 80px;
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--border-main);
+    margin: 0 auto 10px;
+    box-shadow: var(--shadow-main);
+}
+
+.btn-sidebar {
+    background-color: #fff;
+    color: #000;
+    border: var(--border-main);
+    box-shadow: var(--shadow-main);
+    margin-bottom: 15px;
+}
+
+.btn-danger {
+    background-color: var(--accent-red);
+    color: #fff;
+}
+
+.btn-danger:hover {
+    background-color: #ff6b6b;
+
+.sidebar-divider {
+    border: 0;
+    border-top: 3px solid #000;
+    margin: 20px 0;
+}
+
+/* Modais */
 .modal-overlay {
     position: fixed;
     top: 0;
@@ -213,13 +393,13 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 2000;
 }
 
 .modal-content {
     background: #fff;
     padding: 20px;
-    border: 4px solid #000;
+    border: var(--border-modal);
     text-align: center;
 }
 
@@ -230,126 +410,10 @@ button:hover {
     grid-template-columns: 1fr 1fr;
 }
 
-.status-container {
-    margin: 20px 0;
-}
+/* =========================================
+   5. TELA DE APRESENTAÇÃO (INDEX/INTRO)
+   ========================================= */
 
-.item-gasto small {
-    color: #666;
-    font-size: 0.8rem;
-    display: block;
-    margin-top: 2px;
-}
-
-.item-gasto div:last-child {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.btn-del-gasto {
-    margin: 0;
-    padding: 5px;
-    width: auto;
-}
-
-
-a {
-    color: #000;
-    font-weight: bold;
-    text-decoration: underline;
-    cursor: pointer;
-}
-
-
-
-#form-login p,
-#form-cadastro p {
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-#form-login input,
-#form-cadastro input {
-    margin-bottom: 15px;
-}
-
-/* Estilos para a Tela de Apresentação */
-.intro-card {
-    text-align: center;
-    padding: 40px 20px !important;
-    animation: fadeIn 0.5s ease-out;
-}
-
-.emoji-bag {
-    font-size: 4rem;
-    margin-bottom: 20px;
-    display: inline-block;
-    background: #fff;
-    border: 3px solid #000;
-    padding: 10px;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.intro-card h1 {
-    font-size: 2.5rem;
-    line-height: 1;
-    margin-bottom: 15px;
-}
-
-.intro-card p {
-    font-size: 1.1rem;
-    margin-bottom: 25px !important;
-    text-align: center !important;
-}
-
-.features {
-    list-style: none;
-    text-align: left;
-    display: inline-block;
-    margin-bottom: 30px;
-}
-
-.features li {
-    font-weight: bold;
-    margin: 10px 0;
-    font-size: 1rem;
-}
-
-.btn-comecar {
-    padding: 10px;
-    border: 2px solid #000;
-    background: #000;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    transition: 0.2s;
-    margin: 10px 0;
-    width: 100%;
-}
-
-.btn-comecar:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 8px 8px 0px #000 !important;
-    background: #4CAF50 !important;
-    color: white !important;
-
-}
-
-/* Animação simples de entrada */
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-/* Container da Intro */
 .intro-container {
     display: flex;
     flex-direction: column;
@@ -357,25 +421,8 @@ a {
     animation: fadeIn 0.6s ease-out;
 }
 
-/* Hero Card */
 .hero-card {
-    background: #fff;
-    text-align: center;
     padding: 50px 20px !important;
-    position: relative;
-}
-
-.badge {
-    position: absolute;
-    top: -15px;
-    right: 10px;
-    background: #ff4757;
-    color: white;
-    padding: 5px 15px;
-    font-weight: bold;
-    border: 3px solid #000;
-    transform: rotate(5deg);
-    font-size: 0.8rem;
 }
 
 .emoji-main {
@@ -383,13 +430,27 @@ a {
     margin-bottom: 10px;
 }
 
-.hero-card h1 {
-    font-size: 2.8rem;
-    line-height: 1;
-    margin-bottom: 20px;
+.badge {
+    position: absolute;
+    top: -15px;
+    right: 10px;
+    background: var(--accent-red);
+    color: white;
+    padding: 5px 15px;
+    font-weight: bold;
+    border: var(--border-main);
+    transform: rotate(5deg);
+    font-size: 0.8rem;
 }
 
-/* Grid de Funcionalidades */
+.hero-btns {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Grids da Index */
 .features-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -398,9 +459,9 @@ a {
 
 .feature-item {
     background: #fff;
-    border: 3px solid #000;
+    border: var(--border-main);
     padding: 15px;
-    box-shadow: 4px 4px 0px #000;
+    box-shadow: var(--shadow-main);
 }
 
 .feature-icon {
@@ -409,25 +470,35 @@ a {
     margin-bottom: 10px;
 }
 
-.feature-item h3 {
-    font-size: 1rem;
-    margin-bottom: 5px;
+.comparison-grid,
+.testimonials-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
 }
 
-.feature-item p {
-    font-size: 0.8rem;
-    color: #444;
+.comparison-item {
+    padding: 15px;
+    border: 2px solid #000;
+    margin-top: 10px;
 }
 
-/* Seção de Passos (Steps) */
+.comparison-item.old {
+    background: #f1f1f1;
+}
+
+.comparison-item.nook {
+    background: #c1ffc1;
+    box-shadow: var(--shadow-main);
+}
+
+.comparison-item ul {
+    list-style: none;
+    text-align: left;
+}
+
 .steps-card {
-    background: #a29bfe !important;
-    /* Roxo suave Neobrutalista */
-}
-
-.steps-card h3 {
-    margin-bottom: 20px;
-    text-decoration: underline;
+    background: var(--accent-purple) !important;
 }
 
 .step {
@@ -447,316 +518,95 @@ a {
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    flex-shrink: 0;
     box-shadow: 2px 2px 0px #000;
 }
 
-.step p {
-    font-size: 0.9rem;
-    font-weight: bold;
-}
-
-.footer-intro {
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-top: 10px;
-    opacity: 0.7;
-}
-
-/* Responsividade para telas muito pequenas */
-@media (max-width: 350px) {
-    .features-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
-.link-voltar {
-    display: inline-block;
-    margin-bottom: 20px;
-    font-size: 0.9rem;
-    text-decoration: none;
-    color: #555;
-    transition: 0.2s;
-}
-
-.link-voltar:hover {
-    color: #000;
-    transform: translateX(-3px);
-    /* Pequena animação lateral */
-}
-
-/* Ajuste no box-viagem para acomodar o link de voltar no topo */
-.box-viagem {
-    position: relative;
-}
-
-/* Botão que abre a sidebar */
-.btn-open-sidebar {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 50px;
-    height: 50px;
+.quote-card {
     background: #fff;
-    border: 3px solid #000;
-    box-shadow: 4px 4px 0px #000;
-    font-size: 1.5rem;
-    z-index: 90;
-    cursor: pointer;
-    color: #000;
-    display: flex;
-    align-items: center;
-}
-
-/* Estrutura da Sidebar */
-.sidebar {
-    position: fixed;
-    top: 0;
-    left: -320px;
-    /* Escondida */
-    width: 300px;
-    height: 100vh;
-    background: #fff;
-    border-right: 5px solid #000;
-    z-index: 1000;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 10px 0px 0px rgba(0, 0, 0, 0.1);
-
-}
-
-.sidebar.ativa {
-    transform: translateX(320px);
-    box-shadow: 15px 0px 0px #000;
-}
-
-/* Overlay Escuro */
-.sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 900;
-}
-
-/* Conteúdo interno */
-.sidebar-header {
+    font-style: italic;
     text-align: center;
-    padding: 20px 0;
-    border-bottom: 3px solid #000;
-    margin-bottom: 20px;
 }
 
-.box-login .user-avatar {
-    font-size: 2rem;
-    background: #a29bfe;
-    width: 80px;
-    height: 80px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #000;
-    margin: 0 auto 10px;
-    box-shadow: 4px 4px 0px #000;
-}
-
-#user-email-display {
-    font-weight: bold;
-    word-break: break-all;
-}
-
-.btn-sidebar {
-    background: #fff;
-    color: #000;
-    text-align: center;
-
-    align-items: center;
-    gap: 15px;
-    margin-bottom: 15px;
-    border: 3px solid #000;
-    box-shadow: 4px 4px 0px #000;
-
-}
-
-.btn-sidebar:hover {
-    background: #eee;
-    transform: translate(-2px, -2px);
-    box-shadow: 6px 6px 0px #000;
-}
-
-.btn-danger {
-    background: #ff4757 !important;
-    color: #fff !important;
-}
-
-.sidebar-divider {
-    border: 0;
-    border-top: 3px solid #000;
-    margin: 20px 0;
-}
-
-.btn-close-sidebar {
-
-    background: #000;
-    color: #fff;
-}
-
-/* Adicionar ao seu styles.css */
-
-.password-container {
-    margin-bottom: 15px;
-    position: relative;
-}
-
-.show-password {
+.quote-card strong {
     display: block;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin-top: 5px;
+    margin-top: 10px;
+    font-style: normal;
+    color: var(--accent-purple);
+}
+
+.faq-card details {
+    text-align: left;
+    border-bottom: 2px solid #000;
+    padding: 10px 0;
     cursor: pointer;
-    text-align: right;
 }
 
-.show-password input {
-    width: auto;
-    display: inline-block;
-    margin-right: 5px;
+.faq-card summary {
+    font-weight: bold;
+    outline: none;
 }
 
-/* Ajuste para inputs de senha ficarem iguais aos outros */
-input[type="password"] {
-    margin-bottom: 0px !important;
-    /* Espaço controlado pelo container */
+.final-cta {
+    text-align: center;
+    padding: 40px 0;
 }
 
-/* Botão de Voltar com Ícone */
-.btn-voltar-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    background: #fff;
-    border: 2px solid #000;
-    box-shadow: 3px 3px 0px #000;
-    color: #000;
-    text-decoration: none;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    transition: 0.2s;
+.final-cta button {
+    background: var(--accent-red);
+    font-size: 1.2rem;
+    padding: 20px;
+    box-shadow: var(--shadow-hover);
 }
 
-.btn-voltar-icon:hover {
-    transform: translate(-2px, -2px);
-    box-shadow: 5px 5px 0px #000;
-    background: #eee;
-}
+/* =========================================
+   6. RESPONSIVIDADE E AJUSTES DESKTOP
+   ========================================= */
 
-/* Posiciona o botão de voltar fixo no dashboard no canto superior direito */
-.dashboard-page .btn-voltar,
-.dashboard-page .btn-voltar-icon {
-    position: fixed;
-    top: 20px;
-    /* mesma altura do botão da sidebar */
-    right: 20px;
-    /* canto extremo direito */
-    z-index: 95;
-    /* acima do botão de abrir sidebar */
-    width: auto;
-    height: 48px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
+@media (min-width: 768px) {
 
-@media (max-width: 420px) {
+    /* Hero */
+    .hero-card h1 {
+        font-size: 3.5rem;
+    }
 
-    .dashboard-page .btn-voltar,
-    .dashboard-page .btn-voltar-icon {
-        top: 12px;
-        right: 12px;
-        height: 44px;
+    /* Grids expansíveis */
+    .features-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    .comparison-grid,
+    .testimonials-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .steps-wrapper {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+        margin-top: 20px;
+    }
+
+    .step {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    /* Botões centralizados */
+    .hero-btns button,
+    .final-cta button {
+        max-width: 350px;
     }
 }
 
-/* Regras adicionais para responsividade mobile (melhor acesso a toque e ajuste de layout) */
-@media (max-width: 480px) {
-
-    /* Ajustes específicos para dashboard mobile */
-    .dashboard-page .lista-viagens-wrapper {
-        padding: 12px 8px;
-    }
-
-    .lista-viagens-wrapper {
-        max-width: 100%;
-        padding: 0 8px;
-    }
-
-    .box-viagem {
-        padding: 16px;
-    }
-
-    button {
-        padding: 12px;
-        font-size: 1rem;
-    }
-
-    .btn-open-sidebar {
-        width: 48px;
-        height: 48px;
-        top: 12px;
-        left: 12px;
-        font-size: 1.2rem;
-    }
-
-    /* Ajusta posicionamento do voltar para não sobrepor o botão de abrir sidebar */
-    .dashboard-page .btn-voltar,
-    .dashboard-page .btn-voltar-icon {
-        margin-left: 72px;
-        margin-bottom: 12px;
-        z-index: 10;
-    }
-
-    /* Sidebar ocupa porcentagem da tela em mobile e anima corretamente */
-    .sidebar {
-        width: 80vw;
-        left: -80vw;
-    }
-
-    .sidebar.ativa {
-        transform: translateX(80vw);
-    }
-
-    .sidebar-overlay {
-        z-index: 800;
-    }
-
-    .dashboard-page .container-nova-viagem {
-        position: sticky;
-        top: 56px;
-        /* não ficar embaixo do botão flutuante */
-    }
-}
-
+/* Telas muito pequenas */
 @media (max-width: 360px) {
-
-    /* Ajustes finais para telas muito pequenas */
-    .dashboard-page .btn-voltar,
-    .dashboard-page .btn-voltar-icon {
-        margin-left: 60px;
-    }
-
     .features-grid {
         grid-template-columns: 1fr;
     }
 }
 
-/* Grupo de Input com Botão de Ver Senha */
+/* Formulários Login/Cadastro */
 .input-group-password {
     position: relative;
     display: flex;
@@ -766,7 +616,6 @@ input[type="password"] {
 
 .input-group-password input {
     padding-right: 45px;
-    /* Espaço para o ícone não sobrepor o texto */
     margin-bottom: 0 !important;
 }
 
@@ -785,214 +634,15 @@ input[type="password"] {
     transform: none !important;
 }
 
-.btn-toggle-password:hover {
-    background: none;
-
-}
-
-/* =========================================
-   AJUSTES PARA DESKTOP (INDEX/INTRO)
-   ========================================= */
-
-@media (min-width: 768px) {
-
-    /* Permite que o container da index seja mais largo que o dashboard */
-    #tela-intro {
-        max-width: 1000px;
-        margin: 0 auto;
+/* Animações */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
     }
 
-    /* Hero Section: Texto maior e mais imponente */
-    .hero-card h1 {
-        font-size: 4rem;
-        max-width: 800px;
-        margin-left: auto;
-        margin-right: auto;
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
-
-    /* Grid de Benefícios: 4 colunas em vez de 2 */
-    .features-grid {
-        grid-template-columns: repeat(4, 1fr);
-        gap: 20px;
-    }
-
-    /* Passos (Como funciona): Lado a lado em vez de lista vertical */
-    .steps-wrapper {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        margin-top: 20px;
-    }
-
-    .step {
-        flex-direction: column;
-        text-align: center;
-        gap: 15px;
-    }
-
-    .step-number {
-        width: 50px;
-        height: 50px;
-        font-size: 1.2rem;
-    }
-
-    /* Ajuste do botão de começar para não ficar gigante no desktop */
-    .btn-começar {
-        max-width: 300px;
-        margin-left: auto;
-        margin-right: auto;
-        font-size: 1.2rem;
-        padding: 15px;
-    }
-}
-
-/* Ajuste sutil para o wrapper na index não limitar a 380px no desktop */
-body:not(.dashboard-page) .lista-viagens-wrapper {
-    max-width: 100%;
-}
-
-/* =========================================
-   ESTILOS EXCLUSIVOS DA INDEX (INTRO)
-   ========================================= */
-
-/* Ajuste do container para desktop */
-@media (min-width: 768px) {
-    #tela-intro {
-        max-width: 1000px;
-        margin: 0 auto;
-        padding-top: 40px;
-    }
-
-    .hero-card h1 {
-        font-size: 3.5rem;
-    }
-
-    .features-grid {
-        grid-template-columns: repeat(4, 1fr);
-    }
-
-    .steps-wrapper {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
-        margin-top: 20px;
-    }
-
-    .comparison-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-
-    .testimonials-grid {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-    }
-}
-
-/* Hero Adjustments */
-.hero-btns {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-}
-
-.link-cadastro-hero {
-    margin-top: 5px;
-    text-decoration: none;
-    font-size: 0.9rem;
-}
-
-/* Comparison Section */
-.comparison-card {
-    background: #fff;
-}
-
-.comparison-item {
-    padding: 15px;
-    border: 2px solid #000;
-    margin-top: 10px;
-}
-
-.comparison-item.old {
-    background: #f1f1f1;
-}
-
-.comparison-item.nook {
-    background: #c1ffc1;
-    box-shadow: 4px 4px 0px #000;
-}
-
-.comparison-item h4 {
-    margin-bottom: 10px;
-    text-transform: uppercase;
-}
-
-.comparison-item ul {
-    list-style: none;
-    text-align: left;
-}
-
-.comparison-item li {
-    margin-bottom: 5px;
-    font-weight: bold;
-    font-size: 0.9rem;
-}
-
-/* Quote Cards */
-.quote-card {
-    background: #fff;
-    font-style: italic;
-    text-align: center;
-}
-
-.quote-card strong {
-    display: block;
-    margin-top: 10px;
-    font-style: normal;
-    color: #a29bfe;
-}
-
-/* FAQ Details */
-.faq-card details {
-    text-align: left;
-    border-bottom: 2px solid #000;
-    padding: 10px 0;
-    cursor: pointer;
-}
-
-.faq-card summary {
-    font-weight: bold;
-    outline: none;
-}
-
-.faq-card p {
-    padding-top: 10px;
-    font-size: 0.9rem !important;
-}
-
-/* Final CTA */
-.final-cta {
-    text-align: center;
-    padding: 40px 0;
-}
-
-.final-cta p {
-    font-weight: 900;
-    font-size: 1.2rem;
-    margin-bottom: 15px;
-}
-
-.final-cta button {
-    background: #ff4757;
-    font-size: 1.2rem;
-    padding: 20px;
-    box-shadow: 6px 6px 0px #000;
-}
-
-/* Reset de largura para a Intro */
-body:not(.dashboard-page) .lista-viagens-wrapper {
-    max-width: 1000px;
 }
