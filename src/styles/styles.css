@@ -172,6 +172,7 @@ button:hover {
     margin-bottom: 20px;
     transition: 0.2s;
 }
+
 .btn-voltar-icon:hover {
     transform: translate(-2px, -2px);
     box-shadow: 5px 5px 0px #000;
@@ -375,7 +376,7 @@ a {
 
 .btn-danger:hover {
     background-color: #ff6b6b;
-}    
+}
 
 .sidebar-divider {
     border: 0;
@@ -648,11 +649,25 @@ a {
     }
 }
 
+
+.detalhes-grid-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; 
+}
+
+.detalhes-col {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
 /* =========================================
    DASHBOARD DESKTOP (MELHORIAS)
    ========================================= */
 
 @media (min-width: 768px) {
+
     /* Permite que o Dashboard use mais largura no PC */
     .dashboard-page .lista-viagens-wrapper {
         max-width: 1100px;
@@ -672,19 +687,14 @@ a {
         display: flex;
         flex-direction: column;
     }
-    
+
     /* Layout de Detalhes em duas colunas */
     .detalhes-grid-layout {
         display: grid;
-        grid-template-columns: 400px 1fr; /* Coluna de info menor, gastos maior */
+        grid-template-columns: 400px 1fr;
+        /* Coluna de info menor, gastos maior */
         gap: 25px;
         align-items: start;
-    }
-
-    .detalhes-col {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
     }
 
     /* Ajuste para o formulário de gastos não ficar esticado verticalmente */
@@ -694,8 +704,9 @@ a {
         gap: 10px;
         align-items: end;
     }
-    
-    .form-gasto input, .form-gasto button {
+
+    .form-gasto input,
+    .form-gasto button {
         margin: 0 !important;
     }
 }
@@ -705,7 +716,7 @@ a {
    ========================================= */
 
 /* Menu (Esquerda) e Voltar (Direita) idênticos */
-.btn-open-sidebar, 
+.btn-open-sidebar,
 .dashboard-page .btn-voltar-icon {
     position: fixed;
     top: 20px;
@@ -725,10 +736,15 @@ a {
     margin: 0;
 }
 
-.btn-open-sidebar { left: 20px; }
-.dashboard-page .btn-voltar-icon { right: 20px; }
+.btn-open-sidebar {
+    left: 20px;
+}
 
-.btn-open-sidebar:hover, 
+.dashboard-page .btn-voltar-icon {
+    right: 20px;
+}
+
+.btn-open-sidebar:hover,
 .dashboard-page .btn-voltar-icon:hover {
     background: #eee;
     transform: translate(-2px, -2px);
