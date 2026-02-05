@@ -251,6 +251,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .item-gasto {
