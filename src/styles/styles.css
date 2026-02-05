@@ -50,7 +50,9 @@ body {
     display: flex;
     flex-direction: column;
     gap: 20px;
-    justify-content: center;
+    /* Adicionamos isso para garantir que os filhos (caixas) estiquem */
+    align-items: stretch; 
+    margin: 0 auto;
 }
 
 /* Ajuste específico para Dashboard */
@@ -251,8 +253,8 @@ a {
     display: flex;
     flex-direction: column;
     gap: 15px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 100%; /* Força a lista a ter 100% da largura do wrapper */
+    margin: 0;    /* Remove margens laterais que podem encolher a box */
 }
 
 .item-gasto {
@@ -680,8 +682,22 @@ a {
     /* Tela de Lista: Viagens em Grid (várias por linha) */
     .dashboard-page #container-listagem {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-        gap: 20px;
+        /* Força exatamente 3 colunas de tamanhos iguais */
+        grid-template-columns: repeat(3, 1fr); 
+        gap: 25px; /* Espaço entre as caixas */
+        width: 100%;
+        max-width: 1200px; /* Aumentei um pouco para caber 3 confortavelmente */
+        margin: 0 auto;
+        align-items: start;
+    }
+
+    .dashboard-page #container-listagem .box-viagem {
+        margin: 0; 
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-height: 250px; /* Altura mínima para manter simetria */
     }
 
     /* Topo da lista: Entrar e Criar lado a lado */
@@ -712,6 +728,8 @@ a {
         margin: 0 !important;
     }
 }
+
+
 
 /* =========================================
    SIMETRIA PERFEITA DOS BOTÕES FIXOS
