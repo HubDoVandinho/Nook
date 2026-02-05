@@ -190,9 +190,17 @@ button:hover {
 
 .btn-del-gasto {
     background: none;
-    color: red;
+    color: #ff4757;
     border: none;
     font-size: 1.2rem;
+}
+
+.btn-del-gasto:hover {
+   transform: translate(-2px, -2px);
+   background-color: #ff4757;
+    color: white;
+    
+
 }
 
 .modal-overlay {
