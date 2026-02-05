@@ -24,26 +24,36 @@ let usuarioAtual = null;
 let viagens = [];
 let viagemAtivaId = null;
 let gastoAtivoId = null;
+let unsubscribeViagens = null; // Variável para controlar o ouvinte
 
-// =========================================
-// 1. MONITORAMENTO DE AUTENTICAÇÃO
-// =========================================
 onAuthStateChanged(auth, (user) => {
     if (user) {
         usuarioAtual = user;
-
-        const nameDisplay = document.getElementById("user-name-display");
-        
-        if (nameDisplay) {
-            nameDisplay.innerText = user.displayName || user.email.split('@')[0] || "Viajante";
-        }
+        // Limpa ouvinte anterior se existir para evitar duplicidade
+        if (unsubscribeViagens) unsubscribeViagens(); 
         
         ouvirViagens();
-        configurarMascaraMoeda();
     } else { 
         window.location.href = 'index.html'; 
     }
 });
+
+function ouvirViagens() {
+    const q = query(collection(db, "viagens"), where("participantes", "array-contains", usuarioAtual.uid));
+    
+    // Armazena a função de cancelamento
+    unsubscribeViagens = onSnapshot(q, (snapshot) => {
+        viagens = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        renderizarListaViagens();
+        
+        // Só renderiza gastos se estivermos na tela de detalhes
+        if (viagemAtivaId) {
+            renderizarGastos();
+        }
+    });
+}
+
+
 
 // =========================================
 // 2. FUNÇÕES DE AVISO/MODAL CUSTOMIZADO
@@ -100,18 +110,7 @@ window.confirmarExcluirConta = () => {
 // =========================================
 // 4. GESTÃO DE VIAGENS (FIRESTORE)
 // =========================================
-function ouvirViagens() {
-    const q = query(collection(db, "viagens"), where("participantes", "array-contains", usuarioAtual.uid));
-    
-    onSnapshot(q, (snapshot) => {
-        viagens = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-        renderizarListaViagens();
-        if (viagemAtivaId) {
-            renderizarParticipantes();
-            renderizarGastos();
-        }
-    });
-}
+
 
 window.alternarFormularioViagem = (el) => {
     const container = document.querySelector(".btn-add-viagem");
@@ -334,7 +333,13 @@ function renderizarListaViagens() {
     const viagensOrdenadas = [...viagens].sort((a, b) => (b.criadoEm || 0) - (a.criadoEm || 0));
 
     viagensOrdenadas.forEach(v => {
-        const total = v.gastos.reduce((s, g) => s + g.valor, 0);
+        // --- INÍCIO DA CORREÇÃO ---
+        // Se v.gastos não existir (viagem nova), ele usa um array vazio []
+        const listaGastos = v.gastos || [];
+        // Soma os valores com segurança, tratando casos onde g.valor possa ser nulo
+        const total = listaGastos.reduce((s, g) => s + (g.valor || 0), 0);
+        // --- FIM DA CORREÇÃO ---
+
         const div = document.createElement("div");
         div.className = "box-viagem";
         div.style.marginBottom = "15px";
@@ -348,7 +353,7 @@ function renderizarListaViagens() {
         div.appendChild(data);
         
         const status = document.createElement("p");
-        status.innerHTML = "Status: <span style=\"color: var(--primary-color)\">" + (v.status || "Em andamento") + "</span>";
+        status.innerHTML = "Status: <span>" + (v.status || "Em andamento") + "</span>";
         div.appendChild(status);
         
         const totalP = document.createElement("p");
@@ -369,32 +374,30 @@ window.abrirDetalhes = (id) => {
     const v = viagens.find(x => x.id === id);
     if (!v) return;
     
-    if (!v.criador && v.participantes && v.participantes.length > 0) {
-        v.criador = v.participantes[0];
-    }
-
+    // Esconde lista, mostra detalhes
     document.getElementById("tela-lista").classList.add("hidden");
     document.getElementById("tela-detalhes").classList.remove("hidden");
     
-    document.getElementById("btn-voltar-global")?.classList.remove("hidden");
-
+    // Preenche cabeçalho
     document.getElementById("detalhe-titulo").innerText = v.nome;
     document.getElementById("detalhe-data").innerText = "Data: " + formatarData(v.data);
     document.getElementById("status-viagem").value = v.status;
-    document.getElementById("viagem-id-display").innerText = id;
-    
+
+    // --- CORREÇÃO AQUI ---
+    // Verifique se o elemento existe antes de tentar escrever nele
+    const displayId = document.getElementById("viagem-id-display");
+    if (displayId) displayId.innerText = id;
+    // ---------------------
+
+    // Configura permissões do criador
     const isCreator = v.criador === usuarioAtual.uid;
     const btnDelete = document.querySelector(".btn-excluir-viagem");
-    const selectStatus = document.getElementById("status-viagem");
-    const emailInput = document.getElementById("email-convite");
-    
     if (btnDelete) btnDelete.style.display = isCreator ? "block" : "none";
-    if (selectStatus) selectStatus.disabled = !isCreator;
-    if (emailInput) emailInput.disabled = !isCreator;
     
+    // Renderiza o conteúdo específico desta viagem
     renderizarParticipantes();
     renderizarGastos();
-    window.scrollTo(0,0);
+    window.scrollTo(0, 0);
 };
 
 window.voltarParaLista = () => {
